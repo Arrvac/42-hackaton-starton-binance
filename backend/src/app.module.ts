@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TestModule } from './api/test/test.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { BooksModule } from './api/books/books.module';
+import { S3Module } from './shared/s3/s3.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { AppService } from './app.service';
         charset: 'utf8mb4',
       }),
     }),
-    TestModule,
+    BooksModule,
+    S3Module,
   ],
   controllers: [AppController],
   providers: [AppService],

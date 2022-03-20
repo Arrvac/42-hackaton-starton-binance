@@ -1,12 +1,13 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('test')
-export class Test {
+@Entity('book')
+export class Book {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({
-    default: null,
-  })
-  name: number;
+  @Column()
+  name: string;
+
+  @Column()
+  description: string;
 }
