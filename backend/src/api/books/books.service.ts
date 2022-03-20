@@ -10,7 +10,18 @@ export class BooksService {
   async create(createBookDto: CreateBookDto) {
     const book = await this.bookRepository.save(createBookDto);
 
-    console.log(book);
+    return book;
+  }
+
+  async getAllBooks() {
+    const books = await this.bookRepository.find();
+
+    return books;
+  }
+
+  async getBook(id: string) {
+    const book = await this.bookRepository.findOne({ id: id });
+
     return book;
   }
 }

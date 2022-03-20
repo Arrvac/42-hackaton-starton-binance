@@ -41,13 +41,14 @@ export const Navbar = () => {
       <Container>
         <Title>Publish.me</Title>
         <Center>
-          <Link onClick={() => {
-			  console.log("click");
-			  history.push(`/all-books`);
-			  }}
-		  >
-			  All books
-			</Link>
+          <Link
+            onClick={() => {
+              console.log("click");
+              history.push(`/all-books`);
+            }}
+          >
+            All books
+          </Link>
           <Link
             onClick={() => {
               history.push(`/create-book`);
@@ -92,24 +93,6 @@ export const Navbar = () => {
     </>
   );
 };
-
-const Error = styled.div`
-  display: flex;
-  width: 100%;
-  height: 60px;
-  background: linear-gradient(270.06deg, #e33c3d 10.22%, #ee7354 77.56%);
-  align-items: center;
-  justify-content: center;
-`;
-
-const ErrorText = styled.div`
-  color: ${colors.main.white};
-  font-family: Work Sans;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 18px;
-  letter-spacing: -0.01em;
-`;
 
 const HeaderBackground = styled.img`
   position: absolute;
