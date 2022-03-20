@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigModule } from '@nestjs/config';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   ConfigModule.forRoot();
@@ -13,6 +14,8 @@ async function bootstrap() {
     origin: true,
     credentials: true,
   });
+
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   const port = process.env.BACKEND_PORT ?? process.env.PORT;
 

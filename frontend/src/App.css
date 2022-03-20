@@ -13,6 +13,27 @@
   }
 }
 
+@font-face {
+  font-family: "Work Sans";
+  font-weight: 800;
+  src: local("Work Sans"),
+    url(./assets/fonts/WorkSans-Regular.ttf) format("opentype");
+}
+
+@font-face {
+  font-family: "Work Sans";
+  font-weight: 900;
+  src: local("Work Sans"),
+    url(./assets/fonts/WorkSans-Bold.ttf) format("opentype");
+}
+
+@font-face {
+  font-family: "Work Sans";
+  font-weight: 1000;
+  src: local("Work Sans"),
+    url(./assets/fonts/WorkSans-Black.ttf) format("opentype");
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
