@@ -2,6 +2,7 @@ import { FC } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { CreateBooks } from "../pages/CreateBooks";
 import { Book } from "../pages/Book";
+import { AllBooks } from "../pages/AllBooks";
 import { Home } from "../pages/Home";
 
 export const Routes: FC = () => {
@@ -11,7 +12,7 @@ export const Routes: FC = () => {
         <Route exact path="/" component={Home} />
         <Route exact path={`/create-book`} component={CreateBooks} />
         <Route exact path={`/book/:id`} component={Book} />
-
+		    <Route exact path={`/all-books`} component={AllBooks} />
         <Redirect to="/" />
       </Switch>
     </BrowserRouter>

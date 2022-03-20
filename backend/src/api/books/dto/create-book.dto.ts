@@ -8,4 +8,16 @@ export class CreateBookDto {
   @IsString()
   @IsNotEmpty()
   description: string;
+
+  @IsString()
+  @IsNotEmpty()
+  author: string;
+
+  @IsString()
+  @IsNotEmpty()
+  media_url: string;
+
+  @IsString()
+  @IsNotEmpty()
+  address: string;
 }
