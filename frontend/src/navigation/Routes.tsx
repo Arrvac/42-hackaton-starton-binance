@@ -9,7 +9,6 @@ export const Routes: FC = () => {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path={`/create-book`} component={CreateBooks} />
-
         <Redirect to="/" />
       </Switch>
     </BrowserRouter>

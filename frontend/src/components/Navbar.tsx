@@ -4,9 +4,36 @@ import styled from "styled-components";
 import { ReactComponent as DiscordIcon } from "../assets/icons/discord.svg";
 import { ReactComponent as TwitterIcon } from "../assets/icons/twitter.svg";
 import { colors } from "../theme/colors";
+import axios from "axios";
+import { useState } from "react";
+import { BigNumber } from "ethers";
+
+const http = axios.create({
+  baseURL: "https://api.starton.io/v2",
+  headers: {
+    "x-api-key": "39TGReMLuduQkPr978dxj9mUdIBHKWkO",
+  },
+});
+
+const decimals = BigNumber.from("1000000000000000000");
 
 export const Navbar = () => {
   const history = useHistory();
+  const address = document.cookie;
+  const [total, setTotal] = useState(0);
+
+  http
+    .post(
+      "/smart-contract/avalanche-fuji/0x41De25E4b2F30752578F721Bc349eB5c413Bd38a/read",
+      {
+        functionName: "balanceOf",
+        params: [address],
+      },
+    )
+    .then(response => {
+      const totalCoins = BigNumber.from(response.data.response.raw);
+      setTotal(totalCoins.div(decimals).toNumber());
+    });
 
   return (
     <>
@@ -17,7 +44,6 @@ export const Navbar = () => {
           <Link onClick={() => history.push(`/all-books`)}>All books</Link>
           <Link
             onClick={() => {
-              console.log("click");
               history.push(`/create-book`);
             }}
           >
@@ -53,7 +79,7 @@ export const Navbar = () => {
               textTransform: "none",
             }}
           >
-            1000 coins
+            {total} coins
           </Button>
         </Right>
       </Container>

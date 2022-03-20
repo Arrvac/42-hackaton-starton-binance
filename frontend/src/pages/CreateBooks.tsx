@@ -1,4 +1,11 @@
-import { ChangeEvent, FC, MutableRefObject, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  FC,
+  MutableRefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
 
 import { ReactComponent as UploadIcon } from "../assets/svg-icons/download-square.svg";
@@ -6,8 +13,17 @@ import { Button, createTheme, TextField } from "@mui/material";
 import { colors } from "../theme/colors";
 import { getS3Url, uploadFile } from "../services/image";
 import { api } from "../services/api";
-import { useParams } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
+import axios from "axios";
+
+const FormData = require("form-data");
+
+const starton = axios.create({
+  baseURL: "https://api.starton.io/v2",
+  headers: {
+    "x-api-key": "39TGReMLuduQkPr978dxj9mUdIBHKWkO",
+  },
+});
 
 export const CreateBooks: FC = () => {
   const inputFile = useRef() as MutableRefObject<HTMLInputElement>;
@@ -15,6 +31,7 @@ export const CreateBooks: FC = () => {
   const [imageName, setImageName] = useState<string | null>(null);
   const [name, setName] = useState<string | null>(null);
   const [description, setDescription] = useState<string | null>(null);
+  const [author, setAuthor] = useState<string | null>(null);
 
   const [alreadySubmit, setAlreadySubmit] = useState(false);
 
@@ -31,14 +48,47 @@ export const CreateBooks: FC = () => {
     setImageName(null);
   };
 
+  const uploadMetadataOnIpfs = async (media_url: string) => {
+    const metadataJson = {
+      name: name,
+      description: description,
+      author: author,
+      media_url: media_url,
+    };
+    const ipfsMetadata = await starton.post("/pinning/content/json", {
+      name: name,
+      content: metadataJson,
+      isSync: true,
+    });
+    return ipfsMetadata.data;
+  };
+
   const handleSubmit = async () => {
+    const metaData = await uploadMetadataOnIpfs(
+      `https://d2q4io46p490bd.cloudfront.net/${imageName}`,
+    );
+
+    await starton.post(
+      "/smart-contract/avalanche-fuji/0x8111436514De4a9407761aae536626D60EedEDEf/call",
+      {
+        functionName: "safeMint",
+        signerWallet: "0x0cd6392592d1b7B4bf2BcE009f6a1aCC8899C645",
+        speed: "low",
+        params: [
+          document.cookie, // address 0x0000000000000000000000000000000000000000
+          metaData.pinStatus.pin.cid, // string 'my metadataURI'
+        ],
+      },
+    );
+
     await api.post(`/books`, {
       media_url: `https://d2q4io46p490bd.cloudfront.net/${imageName}`,
       name: name,
       description: description,
-      // address: address,
+      address: document.cookie,
+      author: author,
     });
-    // setAlreadySubmit(true);
+    setAlreadySubmit(true);
     return;
   };
 
@@ -59,10 +109,18 @@ export const CreateBooks: FC = () => {
             />
             <TextField
               id="standard-basic"
-              label="Name"
+              label="Description"
               variant="standard"
               onChange={(text: any) => {
                 setDescription(text.target.value);
+              }}
+            />
+            <TextField
+              id="standard-basic"
+              label="Auteur"
+              variant="standard"
+              onChange={(text: any) => {
+                setAuthor(text.target.value);
               }}
             />
           </InputsWrapper>
@@ -103,7 +161,7 @@ export const CreateBooks: FC = () => {
             </UploadContainer>
           )}
 
-          {alreadySubmit ? (
+          {!alreadySubmit ? (
             <Button color="error" onClick={() => handleSubmit()}>
               Publier le livre
             </Button>

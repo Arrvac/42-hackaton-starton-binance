@@ -10,4 +10,13 @@ export class Book {
 
   @Column()
   description: string;
+
+  @Column()
+  media_url: string;
+
+  @Column()
+  author: string;
+
+  @Column()
+  address: string;
 }
