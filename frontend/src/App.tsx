@@ -18,7 +18,7 @@ function App() {
         <Connect setAddress={setAddress} />
       ) : (
         <Router>
-          <Routes />;
+          <Routes />
         </Router>
       )}
     </>

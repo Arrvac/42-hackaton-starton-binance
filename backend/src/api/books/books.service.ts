@@ -11,5 +11,6 @@ export class BooksService {
     const book = await this.bookRepository.save(createBookDto);
 
     console.log(book);
+    return book;
   }
 }
