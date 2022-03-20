@@ -41,7 +41,13 @@ export const Navbar = () => {
       <Container>
         <Title>Publish.me</Title>
         <Center>
-          <Link onClick={() => history.push(`/all-books`)}>All books</Link>
+          <Link onClick={() => {
+			  console.log("click");
+			  history.push(`/all-books`);
+			  }}
+		  >
+			  All books
+			</Link>
           <Link
             onClick={() => {
               history.push(`/create-book`);
